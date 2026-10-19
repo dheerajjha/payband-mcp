@@ -293,8 +293,8 @@ def _slugs_for_name(company: str) -> list[str]:
     return [s for s in candidates if s and not (s in seen or seen.add(s))]
 
 _LEGAL_SUFFIX = re.compile(
-    r"[\s,]+(?:inc|llc|ltd|limited|plc|gmbh|ag|se|ab|sa|nv|bv|co|corp"
-    r"|corporation|company)\.?\s*$",
+    r"[\s,]+(?:inc|llc|ltd|limited|plc|gmbh|ag|se|ab|corp|corporation|company"
+    r"|co(?:\.?,?\s*ltd)?|s\.?a|s\.?p\.?a|n\.?v|b\.?v)\.?\s*$",
     re.I,
 )
 

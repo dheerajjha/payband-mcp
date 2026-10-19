@@ -315,3 +315,10 @@ def test_board_slugs_keeps_group():
 def test_board_slugs_leading_ab_unchanged():
     assert ats.board_slugs("AB InBev") == ["abinbev", "ab-inbev"]
     
+
+def test_board_slugs_strips_dotted_nv():
+    assert "adyen" in ats.board_slugs("Adyen N.V.")
+
+
+def test_board_slugs_strips_co_ltd():
+    assert "samsungelectronics" in ats.board_slugs("Samsung Electronics Co., Ltd.")
