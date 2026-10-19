@@ -274,7 +274,7 @@ def enrich_pay(postings: list[dict[str, Any]], limit: int = 40) -> int:
     return len(pending)
 
 
-def board_slugs(company: str) -> list[str]:
+def _slugs_for_name(company: str) -> list[str]:
     """Plausible job-board tokens for a company name, most likely first.
 
     The raw name is only a candidate when it is already slug-shaped. It used
@@ -291,6 +291,36 @@ def board_slugs(company: str) -> list[str]:
         candidates.append(base)
     seen: set[str] = set()
     return [s for s in candidates if s and not (s in seen or seen.add(s))]
+
+_LEGAL_SUFFIX = re.compile(
+    r"[\s,]+(?:inc|llc|ltd|limited|plc|gmbh|ag|se|ab|sa|nv|bv|co|corp"
+    r"|corporation|company)\.?\s*$",
+    re.I,
+)
+
+
+def _strip_legal_suffix(company: str) -> str | None:
+    """The name without one trailing legal suffix, or None if it has none."""
+    name = company.strip()
+    stripped = _LEGAL_SUFFIX.sub("", name)
+    return stripped if stripped and stripped != name else None
+
+
+def board_slugs(company: str) -> list[str]:
+    """Job-board tokens for a company name, most likely first.
+
+    A trailing legal suffix ("Inc.", "SE", "AB") is not part of a board's
+    token, so the name without it is tried first, then the full name.
+    """
+    stripped = _strip_legal_suffix(company)
+    names = [stripped, company] if stripped else [company]
+    seen: set[str] = set()
+    return [
+        s
+        for name in names
+        for s in _slugs_for_name(name)
+        if not (s in seen or seen.add(s))
+    ]
 
 
 def fetch_postings(

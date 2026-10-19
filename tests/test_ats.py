@@ -299,3 +299,19 @@ def test_board_label_uses_resolved_slug(monkeypatch):
 
     label, _ = ats.fetch_postings("Toast", board="greenhouse:toast")
     assert label == "greenhouse:toast"
+
+def test_board_slugs_strips_trailing_inc():
+    assert "toast" in ats.board_slugs("Toast, Inc.")
+
+
+def test_board_slugs_strips_trailing_se():
+    assert "zalando" in ats.board_slugs("Zalando SE")
+
+
+def test_board_slugs_keeps_group():
+    assert "boschgroup" in ats.board_slugs("Bosch Group")
+
+
+def test_board_slugs_leading_ab_unchanged():
+    assert ats.board_slugs("AB InBev") == ["abinbev", "ab-inbev"]
+    
