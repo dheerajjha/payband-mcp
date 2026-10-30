@@ -2,6 +2,13 @@
 
 Notable changes per release. Dates are UTC.
 
+## 0.12.2 — 2026-10-31
+
+- **Norway's `ASA` comes off board slugs too.**
+  ([#50](https://github.com/dheerajjha/payband-mcp/pull/50), from @MilindLate)
+  - "Equinor ASA" now tries `equinor` first. Names that merely end in those
+    letters, such as "Visa" or "NASA", are unchanged.
+
 ## 0.12.1 — 2026-10-30
 
 - **Board slugs fold accented letters to plain ASCII.**
