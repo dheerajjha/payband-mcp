@@ -2,6 +2,30 @@
 
 Notable changes per release. Dates are UTC.
 
+## 0.13.0 — 2026-11-08
+
+- **Keka boards are reachable.**
+  ([#27](https://github.com/dheerajjha/payband-mcp/issues/27),
+  [#52](https://github.com/dheerajjha/payband-mcp/pull/52), from @MilindLate)
+  - The Keka parser existed but nothing called it. `board="keka:<tenant>"`
+    now reads a tenant's postings, with `/<portal>` for a site that names one,
+    and a lookup by company name tries `<slug>.keka.com` once Greenhouse, Ashby,
+    Lever and SmartRecruiters have all missed.
+  - A band whose period Keka marks "Not Available" keeps `interval: None`
+    rather than being read as annual, so it stays out of the annual figure.
+  - Posting links go to `<tenant>.keka.com/careers/jobdetails/<id>`.
+- **Employers already probed and rejected are explained, not sent
+  slug-hunting.** ([#29](https://github.com/dheerajjha/payband-mcp/issues/29),
+  [#53](https://github.com/dheerajjha/payband-mcp/pull/53), from @MilindLate)
+  - Ask about Amazon, Apple, Meta, Microsoft or Netflix and the error now says
+    why we cannot read them, with the issue and the date the finding was
+    recorded: Amazon, for one, renders its ranges into HTML only and its JSON
+    carries no pay. It used to advise looking for a Greenhouse slug that does
+    not exist. The boards are still tried first, and an explicit `board=` is
+    honoured.
+  - Google is not on that list. It self-hosts, but nothing records what was
+    tried there, so it still gets the ordinary advice.
+
 ## 0.12.2 — 2026-10-31
 
 - **Norway's `ASA` comes off board slugs too.**
